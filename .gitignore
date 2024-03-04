@@ -1,0 +1,11 @@
+*.h5
+*.nii
+*.nii.gz
+*.mgz
+*.pdf
+*.pyc
+*.mha
+*.pth
+*.pt
+*.ipynb_checkpoints
+.idea/
