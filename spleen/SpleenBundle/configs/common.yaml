@@ -1,0 +1,32 @@
+imports:
+- $import torch
+
+# define a default root directory value, this can overridden on the command line
+#input_dir: "/mnt/workspace/projects/16_MonaiLabel/datasets/Task09_Spleen"
+#abs_path_checkpoint: "./model.pth"
+#fig_save_path: "./plots.png"
+input_dir: "."
+abs_path_checkpoint: "."
+fig_save_path: "."
+test_dir: "."
+pred_dir: "."
+
+a_min: -57
+a_max: 164
+voxel_space1: 1.5
+voxel_space2: 1.5
+voxel_space3: 2.0
+iso_patch_size_tr: 96
+posneg_sample: 1
+batch_tr: 2
+batch_val: 1
+n_worker: 4
+max_epochs: 20
+val_interval: 2
+sw_batch_size: 4
+iso_patch_size_val: 160
+
+# define a device for the network
+device: '$torch.device(''cuda:0'')'
+
+

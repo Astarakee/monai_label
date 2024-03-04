@@ -1,0 +1,42 @@
+imports:
+- $import torch
+- $import scripts
+- $import scripts.network
+- $import scripts.loader
+- $import scripts.tools
+- $import scripts.inference
+
+
+
+network:
+  _target_: scripts.network.UNET
+
+test_files: '$scripts.loader.get_test_images(@test_dir)'
+
+test_org_transforms: '$scripts.tools.get_test_transform(@a_min, @a_max, @voxel_space1, @voxel_space2, @voxel_space3)'
+
+test_org_ds:
+  _target_: Dataset
+  data: '@test_files'
+  transform: '@test_org_transforms'
+
+test_org_loader:
+  _target_: DataLoader
+  dataset: '@test_org_ds'
+  batch_size: '@batch_val'
+  num_workers: '@n_worker'
+
+post_transforms_save: '$scripts.tools.save_test_preds(@test_org_transforms, @pred_dir)'
+
+inferer: '$scripts.inference.pred_test(@network, @abs_path_checkpoint, @test_org_loader, @iso_patch_size_val, @sw_batch_size, @device, @post_transforms_save)'
+
+exec:
+  - $print(@network)
+  - $print(@abs_path_checkpoint)
+  - $print(@test_org_loader)
+  - $print(@iso_patch_size_val)
+  - $print(@sw_batch_size)
+  - $print(@device)
+  - $print(@post_transforms_save)
+
+
