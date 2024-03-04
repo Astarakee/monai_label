@@ -30,13 +30,3 @@ post_transforms_save: '$scripts.tools.save_test_preds(@test_org_transforms, @pre
 
 inferer: '$scripts.inference.pred_test(@network, @abs_path_checkpoint, @test_org_loader, @iso_patch_size_val, @sw_batch_size, @device, @post_transforms_save)'
 
-exec:
-  - $print(@network)
-  - $print(@abs_path_checkpoint)
-  - $print(@test_org_loader)
-  - $print(@iso_patch_size_val)
-  - $print(@sw_batch_size)
-  - $print(@device)
-  - $print(@post_transforms_save)
-
-
