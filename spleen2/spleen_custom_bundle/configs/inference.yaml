@@ -85,7 +85,6 @@ postprocessing:
   - _target_: AsDiscreted
     keys: pred
     argmax: True
-    to_onehot: 2
   - _target_: SaveImaged
     keys: pred
     meta_keys: pred_meta_dict

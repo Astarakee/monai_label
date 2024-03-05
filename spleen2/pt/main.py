@@ -271,7 +271,7 @@ post_transforms = Compose(
 )
 
 
-model.load_state_dict(torch.load(os.path.join(root_dir, "best_metric_model.pth")))
+model.load_state_dict(torch.load(os.path.join(root_dir, "best_model.pt")))
 model.eval()
 
 with torch.no_grad():
@@ -333,12 +333,12 @@ post_transforms = Compose(
             nearest_interp=False,
             to_tensor=True,
         ),
-        AsDiscreted(keys="pred", argmax=True, to_onehot=2),
+        AsDiscreted(keys="pred", argmax=True, to_onehot=2, dim=0),
         SaveImaged(keys="pred", meta_keys="pred_meta_dict", output_dir="./out", output_postfix="seg", resample=False),
     ]
 )
 
-model.load_state_dict(torch.load(os.path.join(root_dir, "best_metric_model.pth")))
+model.load_state_dict(torch.load(os.path.join(root_dir, "best_model.pt")))
 model.eval()
 
 with torch.no_grad():
