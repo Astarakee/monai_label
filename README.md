@@ -1,1 +1,3 @@
-# monai bundle to be used as a monai label app
+# Experiments with Monai Label App
+Current tested models include `spleen segmentation in CT` and `GBM segmentation in 4 MRI sequences`
+## to be updated ...
