@@ -1,11 +1,9 @@
-BUNDLE="./SpleenBundle"
+BUNDLE="./spleen_custom_bundle"
 
 export PYTHONPATH=$BUNDLE
 
-python -m monai.bundle run inferer \
+python -m monai.bundle run run  \
     --bundle_root "$BUNDLE" \
-    --test_dir "/mnt/workspace/projects/16_MonaiLabel/datasets/Task09_Spleen/imagesTs/" \
-    --pred_dir "/mnt/workspace/projects/16_MonaiLabel/datasets/Task09_Spleen/predTs/" \
-    --abs_path_checkpoint "$BUNDLE/models/model.pth" \
+    --dataset_dir "/mnt/workspace/projects/16_MonaiLabel/datasets/Task09_Spleen/imagesTs" \
     --meta_file "$BUNDLE/configs/metadata.json" \
-    --config_file "['$BUNDLE/configs/common.yaml','$BUNDLE/configs/inference.yaml']"
+    --config_file "$BUNDLE/configs/inference.yaml"
