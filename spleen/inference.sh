@@ -1,4 +1,4 @@
-BUNDLE="./spleen_custom_bundle"
+BUNDLE="./spleen_custom"
 
 export PYTHONPATH=$BUNDLE
 
