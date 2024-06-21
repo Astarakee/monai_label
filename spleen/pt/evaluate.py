@@ -1,30 +1,34 @@
-import torch
-from monai.data import decollate_batch
-from monai.handlers.utils import from_engine
-from monai.inferers import sliding_window_inference
 
 
+device = torch.device("cuda:0")
+model = net()
+model.to(device)
+dice_metric = DiceMetric(include_background=False, reduction="mean")
+val_org_transforms = orig_transform(a_min, a_max, pix_space)
 
-def evaluation(abs_path_checkpoint, device, model, val_org_loader, patch_size_Val, sw_batch_size, post_transforms, dice_metric):
+val_org_ds = Dataset(data=val_files, transform=val_org_transforms)
+val_org_loader = DataLoader(val_org_ds, batch_size=1, num_workers=4)
 
-    model.load_state_dict(torch.load(abs_path_checkpoint))
-    model.eval()
+post_transforms = post_trans_eval(val_org_transforms)
 
-    with torch.no_grad():
-        for val_data in val_org_loader:
-            val_inputs = val_data["image"].to(device)
-            sw_batch_size = sw_batch_size
-            val_data["pred"] = sliding_window_inference(val_inputs, patch_size_Val, sw_batch_size, model)
-            val_data = [post_transforms(i) for i in decollate_batch(val_data)]
-            val_outputs, val_labels = from_engine(["pred", "label"])(val_data)
-            # compute metric for current iteration
-            dice_metric(y_pred=val_outputs, y=val_labels)
 
-        # aggregate the final mean dice result
-        metric_org = dice_metric.aggregate().item()
-        # reset the status for next validation round
-        dice_metric.reset()
+model.load_state_dict(torch.load(os.path.join(root_dir, "best_model.pt")))
+model.eval()
 
-    print("Metric on original image spacing: ", metric_org)
+with torch.no_grad():
+    for val_data in val_org_loader:
+        val_inputs = val_data["image"].to(device)
+        roi_size = (160, 160, 160)
+        sw_batch_size = 4
+        val_data["pred"] = sliding_window_inference(val_inputs, roi_size, sw_batch_size, model)
+        val_data = [post_transforms(i) for i in decollate_batch(val_data)]
+        val_outputs, val_labels = from_engine(["pred", "label"])(val_data)
+        # compute metric for current iteration
+        dice_metric(y_pred=val_outputs, y=val_labels)
 
-    return None
+    # aggregate the final mean dice result
+    metric_org = dice_metric.aggregate().item()
+    # reset the status for next validation round
+    dice_metric.reset()
+
+print("Metric on original image spacing: ", metric_org)

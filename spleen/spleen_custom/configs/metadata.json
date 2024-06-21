@@ -1,0 +1,74 @@
+{
+    "schema": "https://github.com/Project-MONAI/MONAI-extra-test-data/releases/download/0.8.1/meta_schema_20220324.json",
+    "version": "0.4.3",
+    "monai_version": "1.2.0",
+    "pytorch_version": "1.13.1",
+    "numpy_version": "1.22.2",
+    "optional_packages_version": {
+        "fire": "0.4.0",
+        "nibabel": "4.0.1",
+        "pytorch-ignite": "0.4.9"
+    },
+    "name": "spleen segmentation",
+    "task": "segmenting spleen in CT images",
+    "description": "a binary segmentation for spleen anatomy",
+    "authors": "Mehdi Astaraki",
+    "copyright": "Free",
+    "data_source": "Decathlon dataset",
+    "data_type": "nifti",
+    "image_classes": "single channel data, intensity scaled to [0, 1]",
+    "label_classes": "single channel data, 1 is spleen, 0 is everything else",
+    "pred_classes": "single channel",
+    "eval_metrics": {
+        "mean_dice": 0.70
+    },
+    "intended_use": "gaining experience with monai label",
+    "network_data_format": {
+        "inputs": {
+            "image": {
+                "type": "image",
+                "format": "hounsfield",
+                "modality": "CT",
+                "num_channels": 1,
+                "spatial_shape": [
+                    96,
+                    96,
+                    96
+                ],
+                "dtype": "float32",
+                "value_range": [
+                    0,
+                    1
+                ],
+                "is_patch_data": true,
+                "channel_def": {
+                    "0": "image"
+                }
+            }
+        },
+        "outputs": {
+            "pred": {
+                "type": "image",
+                "format": "segmentation",
+                "num_channels": 3,
+                "spatial_shape": [
+                    96,
+                    96,
+                    96
+                ],
+                "dtype": "float32",
+                "value_range": [
+                    0,
+                    1,
+                    2
+                ],
+                "is_patch_data": true,
+                "channel_def": {
+                    "0": "background",
+                    "1": "pancreas",
+                    "2": "pancreatic tumor"
+                }
+            }
+        }
+    }
+}

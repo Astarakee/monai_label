@@ -7,5 +7,6 @@
 *.mha
 *.pth
 *.pt
+*.ts
 *.ipynb_checkpoints
 .idea/
